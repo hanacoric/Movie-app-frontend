@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import api from "../../services/api";
+import { useRouter } from "vue-router";
 
 export const useAuth = () => {
   const token = ref<string | null>(localStorage.getItem("token"));
@@ -10,6 +11,8 @@ export const useAuth = () => {
   const name = ref<string>("");
   const email = ref<string>("");
   const password = ref<string>("");
+
+  //login user
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
@@ -29,6 +32,16 @@ export const useAuth = () => {
     }
   };
 
+  //logout user
+  const logout = () => {
+    token.value = null;
+    user.value = null;
+    isLoggedIn.value = false;
+    localStorage.removeItem("token");
+    localStorage.removeItem("userIDToken");
+    console.log("User logged out");
+  };
+
   return {
     token,
     isLoggedIn,
@@ -38,5 +51,6 @@ export const useAuth = () => {
     email,
     password,
     login,
+    logout,
   };
 };

@@ -3,12 +3,14 @@ import Home from "../views/home.vue";
 import Search from "../views/search.vue";
 import Dashboard from "../views/dashboard.vue";
 import Login from "../views/login.vue";
+import Register from "../views/register.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
   { path: "/search", name: "Search", component: Search },
   { path: "/dashboard", name: "Dashboard", component: Dashboard },
   { path: "/login", name: "Login", component: Login },
+  { path: "/register", name: "Register", component: Register },
 ];
 
 export const router = createRouter({

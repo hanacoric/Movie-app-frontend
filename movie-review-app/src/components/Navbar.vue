@@ -21,16 +21,47 @@
         <RouterLink to="/dashboard" class="hover:text-purple-400 transition"
           >DASHBOARD</RouterLink
         >
-        <RouterLink to="/login" class="hover:text-purple-400 transition"
-          >LOGIN</RouterLink
-        >
+        <template v-if="auth.isLoggedIn">
+          <button
+            class="hover:text-purple-400 transition"
+            @click="
+              auth.logout();
+              router.push('/login');
+            "
+          >
+            LOGOUT
+          </button>
+        </template>
+        <template v-else>
+          <RouterLink to="/login" class="hover:text-purple-400 transition"
+            >LOGIN</RouterLink
+          >
+        </template>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
+import { useRouter, RouterLink } from "vue-router";
+import { useAuth } from "../modules/auth/useAuth";
+import { ref, watchEffect } from "vue";
+import { useAuthStore } from "../stores/authStore";
+const auth = useAuthStore();
+
+const { logout } = useAuth();
+const isLoggedIn = ref<boolean>(!!localStorage.getItem("token"));
+
+watchEffect(() => {
+  isLoggedIn.value = !!localStorage.getItem("token");
+});
+
+const router = useRouter();
+
+const handleLogout = () => {
+  logout();
+  router.push("/login");
+};
 </script>
 
 <style scoped>

@@ -32,6 +32,15 @@
         >
           SUBMIT
         </button>
+
+        <div class="text-sm text-center text-white mt-4">
+          Don’t have an account?
+          <RouterLink
+            to="/register"
+            class="text-blue-300 underline hover:text-blue-200"
+            >Register</RouterLink
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -41,15 +50,21 @@
 import Navbar from "../components/Navbar.vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../modules/auth/useAuth";
-
-const router = useRouter();
-const { email, password, login } = useAuth();
-
-const goToRegister = () => {
-  router.push("/register");
-};
+import { useAuthStore } from "../stores/authStore";
+const auth = useAuthStore();
 
 const handleLogin = async () => {
   await login(email.value, password.value);
+  if (token.value) {
+    auth.login(token.value, user.value._id);
+    router.push("/");
+  }
+};
+
+const router = useRouter();
+const { email, password, login, isLoggedIn, token, user } = useAuth();
+
+const goToRegister = () => {
+  router.push("/register");
 };
 </script>
