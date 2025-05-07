@@ -95,11 +95,13 @@ import { useAuth } from "../modules/auth/useAuth";
 import { useAuthStore } from "../stores/authStore";
 import { ref } from "vue";
 import { EyeIcon, EyeOffIcon } from "lucide-vue-next";
+import { useReCaptcha } from "vue-recaptcha-v3";
 const showPassword = ref(false);
 const auth = useAuthStore();
 const emailError = ref("");
 const passwordError = ref("");
 const fieldError = ref("");
+const recaptcha = useReCaptcha();
 
 const handleRegister = async () => {
   emailError.value = "";
@@ -123,7 +125,16 @@ const handleRegister = async () => {
       "Password must be at least 6 characters and include a number.";
     return;
   }
+  if (!recaptcha || !recaptcha.executeRecaptcha) {
+    fieldError.value = "ReCAPTCHA is not ready.";
+    return;
+  }
 
+  const recaptchaToken = await recaptcha.executeRecaptcha("register");
+  if (!recaptchaToken) {
+    fieldError.value = "ReCAPTCHA verification failed.";
+    return;
+  }
   await register(username.value, email.value, password.value);
   if (token.value) {
     auth.login(token.value, user.value?._id || "");

@@ -74,10 +74,13 @@ import { useAuthStore } from "../stores/authStore";
 import { ref } from "vue";
 import { EyeIcon, EyeOffIcon } from "lucide-vue-next";
 const showPassword = ref(false);
+import { useReCaptcha } from "vue-recaptcha-v3";
 
 const auth = useAuthStore();
 
 const fieldError = ref("");
+
+const recaptcha = useReCaptcha();
 
 const handleLogin = async () => {
   error.value = null;
@@ -86,6 +89,17 @@ const handleLogin = async () => {
 
   if (!email.value || !password.value) {
     fieldError.value = "Email and Password are required.";
+    return;
+  }
+
+  if (!recaptcha || !recaptcha.executeRecaptcha) {
+    fieldError.value = "ReCAPTCHA is not ready.";
+    return;
+  }
+
+  const recaptchaToken = await recaptcha.executeRecaptcha("login");
+  if (!recaptchaToken) {
+    fieldError.value = "ReCAPTCHA verification failed.";
     return;
   }
 
