@@ -21,5 +21,11 @@ export const useAuthStore = defineStore("auth", {
       localStorage.removeItem("token");
       localStorage.removeItem("userIDToken");
     },
+    register(token: string, userId: string) {
+      this.token = token;
+      this.userId = userId;
+      localStorage.setItem("token", token);
+      localStorage.setItem("userIDToken", userId);
+    },
   },
 });
