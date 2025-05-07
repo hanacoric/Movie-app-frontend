@@ -14,17 +14,37 @@
             class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none placeholder-transparent text-white"
             placeholder="Email"
           />
+          <p v-if="fieldError" class="text-red-400 text-sm">
+            {{ fieldError }}
+          </p>
         </div>
 
-        <div>
+        <div class="relative">
           <label class="block text-sm mb-1">Password</label>
           <input
-            type="password"
+            :type="showPassword ? 'text' : 'password'"
             v-model="password"
-            class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none placeholder-transparent text-white"
+            class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none placeholder-transparent text-white pr-10"
             placeholder="Password"
           />
+          <button
+            type="button"
+            @click="showPassword = !showPassword"
+            class="absolute right-0 top-0 mt-1.5 mr-2 text-white"
+          >
+            <component
+              :is="showPassword ? EyeOffIcon : EyeIcon"
+              class="w-5 h-5"
+            />
+          </button>
+          <p v-if="fieldError" class="text-red-400 text-sm">
+            {{ fieldError }}
+          </p>
         </div>
+
+        <p v-if="error" class="text-red-400 text-sm mt-2 text-center">
+          {{ error }}
+        </p>
 
         <button
           class="w-full py-2 rounded-full bg-white text-black font-bold tracking-wide hover:bg-gray-200 transition"
@@ -51,9 +71,24 @@ import Navbar from "../components/Navbar.vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../modules/auth/useAuth";
 import { useAuthStore } from "../stores/authStore";
+import { ref } from "vue";
+import { EyeIcon, EyeOffIcon } from "lucide-vue-next";
+const showPassword = ref(false);
+
 const auth = useAuthStore();
 
+const fieldError = ref("");
+
 const handleLogin = async () => {
+  error.value = null;
+
+  fieldError.value = "";
+
+  if (!email.value || !password.value) {
+    fieldError.value = "Email and Password are required.";
+    return;
+  }
+
   await login(email.value, password.value);
   if (token.value) {
     auth.login(token.value, user.value._id);
@@ -62,7 +97,7 @@ const handleLogin = async () => {
 };
 
 const router = useRouter();
-const { email, password, login, isLoggedIn, token, user } = useAuth();
+const { email, password, login, token, user, error } = useAuth();
 
 const goToRegister = () => {
   router.push("/register");

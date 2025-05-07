@@ -17,18 +17,16 @@ export const useAuth = () => {
   const login = async (email: string, password: string): Promise<void> => {
     try {
       const response = await api.post("/users/login", { email, password });
-
       token.value = response.data.token;
       user.value = response.data;
       isLoggedIn.value = true;
-
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userIDToken", response.data._id);
-
+      error.value = null; // Clear any previous errors
       console.log("user is logged in:", response.data);
     } catch (err: any) {
       console.error("Login error:", err);
-      error.value = err.response?.data?.error || "Login failed";
+      error.value = err.response?.data?.error || "User not found";
     }
   };
 
@@ -64,7 +62,7 @@ export const useAuth = () => {
       console.log("user is registered:", response.data);
     } catch (err: any) {
       console.error("Register error:", err);
-      error.value = err.response?.data?.error || "Register failed";
+      error.value = err.response?.data?.error || "User already exists";
     }
   };
 
