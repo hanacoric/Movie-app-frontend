@@ -6,9 +6,19 @@ import Login from "../views/login.vue";
 import Register from "../views/register.vue";
 
 const routes = [
-  { path: "/", name: "Home", component: Home },
-  { path: "/search", name: "Search", component: Search },
-  { path: "/dashboard", name: "Dashboard", component: Dashboard },
+  { path: "/", name: "Home", component: Home, meta: { requiresAuth: true } },
+  {
+    path: "/search",
+    name: "Search",
+    component: Search,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+    meta: { requiresAuth: true },
+  },
   { path: "/login", name: "Login", component: Login },
   { path: "/register", name: "Register", component: Register },
 ];
@@ -16,4 +26,14 @@ const routes = [
 export const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem("token");
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next("/login");
+  } else {
+    next();
+  }
 });
