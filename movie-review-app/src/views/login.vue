@@ -102,9 +102,8 @@ const handleLogin = async () => {
     fieldError.value = "ReCAPTCHA verification failed.";
     return;
   }
-  console.log("reCAPTCHA token:", recaptchaToken);
 
-  await login(email.value, password.value);
+  await login(email.value, password.value, recaptchaToken);
   if (token.value) {
     auth.login(token.value, user.value._id);
     router.push("/");
@@ -118,3 +117,10 @@ const goToRegister = () => {
   router.push("/register");
 };
 </script>
+
+<style scoped>
+.grecaptcha-badge {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+</style>

@@ -136,7 +136,7 @@ const handleRegister = async () => {
     return;
   }
   console.log("reCAPTCHA token:", recaptchaToken);
-  await register(username.value, email.value, password.value);
+  await register(username.value, email.value, password.value, recaptchaToken);
   if (token.value) {
     auth.login(token.value, user.value?._id || "");
     router.push("/login");
