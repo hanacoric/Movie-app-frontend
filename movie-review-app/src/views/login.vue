@@ -102,6 +102,7 @@ const handleLogin = async () => {
     fieldError.value = "ReCAPTCHA verification failed.";
     return;
   }
+  console.log("reCAPTCHA token:", recaptchaToken);
 
   await login(email.value, password.value);
   if (token.value) {
