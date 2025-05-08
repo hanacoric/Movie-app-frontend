@@ -6,16 +6,17 @@ export function useSearch() {
   const results = ref<any[]>([]);
   const loading = ref(false);
   const error = ref("");
+  const page = ref(1);
 
-  const search = async (): Promise<void> => {
+  const search = async (page = 1) => {
     if (!query.value) return;
     loading.value = true;
     error.value = "";
     results.value = [];
 
     try {
-      const data = await searchMovies(query.value);
-      results.value = data;
+      const data = await searchMovies(query.value, page);
+      results.value = data.Search ?? [];
     } catch (err: any) {
       error.value = err.response?.data?.message || "Search failed.";
     } finally {
@@ -28,6 +29,7 @@ export function useSearch() {
     results,
     loading,
     error,
+    page,
     search,
   };
 }

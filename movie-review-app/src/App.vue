@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <div class="h-screen w-full overflow-hidden bg-aurora text-white">
+  <div class="min-h-screen w-full bg-aurora bg-fixed bg-cover text-white pt-20">
     <RouterView />
   </div>
 </template>

@@ -1,13 +1,15 @@
 <template>
-  <div
-    class="bg-white/10 backdrop-blur p-3 rounded-lg shadow-md hover:scale-105 transition"
-  >
-    <img
-      :src="movie.Poster"
-      alt="Poster"
-      class="w-full h-72 object-cover rounded"
-    />
-    <h3 class="mt-2 text-lg font-semibold text-white">{{ movie.Title }}</h3>
+  <div class="bg-white/10 p-3 rounded-xl shadow-lg w-[300px]">
+    <div class="aspect-[2/3] overflow-hidden rounded-md">
+      <img
+        :src="movie.Poster"
+        alt="Poster"
+        class="w-full h-full object-cover"
+      />
+    </div>
+    <h3 class="mt-3 text-lg font-semibold text-white truncate">
+      {{ movie.Title }}
+    </h3>
     <p class="text-sm text-gray-300">{{ movie.Year }}</p>
   </div>
 </template>

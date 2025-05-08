@@ -12,9 +12,9 @@ api.interceptors.request.use((config) => {
   return config;
 });
 // omdb external api for fetching movies
-export const searchMovies = async (query: string) => {
+export const searchMovies = async (query: string, page = 1) => {
   const response = await api.get("/search", {
-    params: { query },
+    params: { query, page },
   });
   return response.data;
 };
