@@ -4,6 +4,7 @@ import Search from "../views/search.vue";
 import Dashboard from "../views/dashboard.vue";
 import Login from "../views/login.vue";
 import Register from "../views/register.vue";
+import MovieDetails from "../views/movieDetails.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home, meta: { requiresAuth: true } },
@@ -21,6 +22,7 @@ const routes = [
   },
   { path: "/login", name: "Login", component: Login },
   { path: "/register", name: "Register", component: Register },
+  { path: "/movie/:id", name: "Movie", component: MovieDetails },
 ];
 
 export const router = createRouter({

@@ -18,4 +18,10 @@ export const searchMovies = async (query: string, page = 1) => {
   });
   return response.data;
 };
+// fetches the movie id from backend
+export const getMovieDetails = async (id: string) => {
+  const response = await api.get(`/movie/${id}`);
+  return response.data;
+};
+
 export default api;

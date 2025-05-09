@@ -1,5 +1,8 @@
 <template>
-  <div class="bg-white/10 p-3 rounded-xl shadow-lg w-[300px]">
+  <router-link
+    :to="`/movie/${movie.imdbID}`"
+    class="bg-white/10 p-3 rounded-xl shadow-lg w-[300px]"
+  >
     <div class="aspect-[2/3] overflow-hidden rounded-md">
       <img
         :src="movie.Poster"
@@ -11,7 +14,7 @@
       {{ movie.Title }}
     </h3>
     <p class="text-sm text-gray-300">{{ movie.Year }}</p>
-  </div>
+  </router-link>
 </template>
 
 <script setup lang="ts">
