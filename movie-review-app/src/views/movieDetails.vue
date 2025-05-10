@@ -32,19 +32,23 @@
         </p>
 
         <!-- Buttons -->
+        <!-- Buttons -->
         <div class="flex gap-4 flex-nowrap">
           <button
-            class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-lg font-semibold whitespace-nowrap"
+            class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-lg font-semibold"
+            @click="addToCategory('watched')"
           >
             Add to Watched
           </button>
           <button
-            class="bg-yellow-500 hover:bg-yellow-600 px-6 py-3 rounded-lg text-lg font-semibold whitespace-nowrap"
+            class="bg-yellow-500 hover:bg-yellow-600 px-6 py-3 rounded-lg text-lg font-semibold"
+            @click="addToCategory('watchlist')"
           >
             Add to Watchlist
           </button>
           <button
-            class="bg-pink-600 hover:bg-pink-700 px-6 py-3 rounded-lg text-lg font-semibold whitespace-nowrap"
+            class="bg-pink-600 hover:bg-pink-700 px-6 py-3 rounded-lg text-lg font-semibold"
+            @click="addToCategory('favorites')"
           >
             Add to Favorites
           </button>
@@ -60,12 +64,39 @@
 import { useRoute } from "vue-router";
 import { onMounted } from "vue";
 import { useMovie } from "../modules/movies/useMovie";
+import api from "../services/api";
 
+const { movie, error, fetchMovie } = useMovie();
 const route = useRoute();
-const { movie, loading, error, fetchMovie } = useMovie();
+const movieId = route.params.id as string;
 
 onMounted(() => {
-  const id = route.params.id as string;
-  fetchMovie(id);
+  fetchMovie(movieId);
 });
+
+const listMap = {
+  watched: "watchedMovies",
+  watchlist: "watchlist",
+  favorites: "favoriteMovies",
+};
+
+const addToCategory = async (
+  category: "watched" | "watchlist" | "favorites"
+) => {
+  const token = localStorage.getItem("token");
+  if (!token || !movie.value?.imdbID) {
+    console.warn("Missing token or movie ID");
+    return;
+  }
+
+  try {
+    await api.post("/movies/add", {
+      listName: listMap[category],
+      movieId: movie.value.imdbID,
+    });
+    console.log(`Successfully added to ${category}`);
+  } catch (err) {
+    console.error(`Failed to add to ${category}`, err);
+  }
+};
 </script>
