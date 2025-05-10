@@ -32,25 +32,38 @@
         </p>
 
         <!-- Buttons -->
-        <!-- Buttons -->
         <div class="flex gap-4 flex-nowrap">
           <button
-            class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-lg font-semibold"
-            @click="addToCategory('watched')"
+            class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-sm font-semibold whitespace-nowrap"
+            @click="toggleCategory('watched', movie.imdbID)"
           >
-            Add to Watched
+            {{
+              isInList("watched", movie.imdbID)
+                ? "Remove from Watched"
+                : "Add to Watched"
+            }}
           </button>
+
           <button
-            class="bg-yellow-500 hover:bg-yellow-600 px-6 py-3 rounded-lg text-lg font-semibold"
-            @click="addToCategory('watchlist')"
+            class="bg-yellow-500 hover:bg-yellow-600 px-6 py-3 rounded-lg text-sm font-semibold whitespace-nowrap"
+            @click="toggleCategory('watchlist', movie.imdbID)"
           >
-            Add to Watchlist
+            {{
+              isInList("watchlist", movie.imdbID)
+                ? "Remove from Watchlist"
+                : "Add to Watchlist"
+            }}
           </button>
+
           <button
-            class="bg-pink-600 hover:bg-pink-700 px-6 py-3 rounded-lg text-lg font-semibold"
-            @click="addToCategory('favorites')"
+            class="bg-pink-600 hover:bg-pink-700 px-6 py-3 rounded-lg text-sm font-semibold whitespace-nowrap"
+            @click="toggleCategory('favorites', movie.imdbID)"
           >
-            Add to Favorites
+            {{
+              isInList("favorites", movie.imdbID)
+                ? "Remove from Favorites"
+                : "Add to Favorites"
+            }}
           </button>
         </div>
       </div>
@@ -64,39 +77,14 @@
 import { useRoute } from "vue-router";
 import { onMounted } from "vue";
 import { useMovie } from "../modules/movies/useMovie";
-import api from "../services/api";
 
-const { movie, error, fetchMovie } = useMovie();
+const { movie, fetchMovie, fetchUserLists, isInList, toggleCategory } =
+  useMovie();
 const route = useRoute();
 const movieId = route.params.id as string;
 
 onMounted(() => {
   fetchMovie(movieId);
+  fetchUserLists();
 });
-
-const listMap = {
-  watched: "watchedMovies",
-  watchlist: "watchlist",
-  favorites: "favoriteMovies",
-};
-
-const addToCategory = async (
-  category: "watched" | "watchlist" | "favorites"
-) => {
-  const token = localStorage.getItem("token");
-  if (!token || !movie.value?.imdbID) {
-    console.warn("Missing token or movie ID");
-    return;
-  }
-
-  try {
-    await api.post("/movies/add", {
-      listName: listMap[category],
-      movieId: movie.value.imdbID,
-    });
-    console.log(`Successfully added to ${category}`);
-  } catch (err) {
-    console.error(`Failed to add to ${category}`, err);
-  }
-};
 </script>
