@@ -5,9 +5,10 @@
     <div
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6"
     >
-      <div
+      <router-link
         v-for="movie in movies"
         :key="movie.imdbID"
+        :to="`/movie/${movie.imdbID}`"
         class="bg-white/10 rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105"
       >
         <div class="aspect-[2/3] w-full">
@@ -23,7 +24,7 @@
           </h4>
           <p class="text-gray-400 text-xs">{{ movie.year }}</p>
         </div>
-      </div>
+      </router-link>
     </div>
   </div>
 </template>

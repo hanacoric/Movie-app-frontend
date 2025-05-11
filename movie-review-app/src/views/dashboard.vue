@@ -1,6 +1,5 @@
 <template>
   <div class="p-6">
-    <h2 class="text-2xl font-bold mb-4">My Dashboard</h2>
     <WatchedList :movies="user?.watchedMovies || []" />
     <Watchlist :movies="user?.watchlist || []" />
     <FavoriteMovies :movies="user?.favoriteMovies?.slice(0, 10) || []" />
