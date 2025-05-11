@@ -35,21 +35,17 @@
         <div class="flex gap-4 flex-nowrap">
           <button
             class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-sm font-semibold whitespace-nowrap"
-            @click="toggleCategory('watched', movie.imdbID)"
+            @click="toggleCategory('watched')"
           >
-            {{
-              isInList("watched", movie.imdbID)
-                ? "Remove from Watched"
-                : "Add to Watched"
-            }}
+            {{ isInList("watched") ? "Remove from Watched" : "Add to Watched" }}
           </button>
 
           <button
             class="bg-yellow-500 hover:bg-yellow-600 px-6 py-3 rounded-lg text-sm font-semibold whitespace-nowrap"
-            @click="toggleCategory('watchlist', movie.imdbID)"
+            @click="toggleCategory('watchlist')"
           >
             {{
-              isInList("watchlist", movie.imdbID)
+              isInList("watchlist")
                 ? "Remove from Watchlist"
                 : "Add to Watchlist"
             }}
@@ -57,10 +53,10 @@
 
           <button
             class="bg-pink-600 hover:bg-pink-700 px-6 py-3 rounded-lg text-sm font-semibold whitespace-nowrap"
-            @click="toggleCategory('favorites', movie.imdbID)"
+            @click="toggleCategory('favorites')"
           >
             {{
-              isInList("favorites", movie.imdbID)
+              isInList("favorites")
                 ? "Remove from Favorites"
                 : "Add to Favorites"
             }}
@@ -71,20 +67,26 @@
   </div>
 </template>
 
-<span class="font-normal"></span>
-
 <script setup lang="ts">
+import { onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
-import { onMounted } from "vue";
 import { useMovie } from "../modules/movies/useMovie";
+import { useListStore } from "../stores/listStore";
 
-const { movie, fetchMovie, fetchUserLists, isInList, toggleCategory } =
-  useMovie();
+const { movie, fetchMovie } = useMovie();
+const listStore = useListStore();
 const route = useRoute();
 const movieId = route.params.id as string;
 
-onMounted(() => {
-  fetchMovie(movieId);
-  fetchUserLists();
+// Fetch movie and lists before component renders
+onBeforeMount(async () => {
+  await listStore.fetchUserLists();
+  await fetchMovie(movieId);
 });
+
+const isInList = (category: "watched" | "watchlist" | "favorites") =>
+  listStore.isInList(category, movieId);
+
+const toggleCategory = (category: "watched" | "watchlist" | "favorites") =>
+  listStore.toggleCategory(category, movieId);
 </script>
