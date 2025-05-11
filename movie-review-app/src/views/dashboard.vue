@@ -1,9 +1,22 @@
 <template>
-  <div class="text-white">
-    <h1 class="text-3xl font-bold mb-4">Dashboard</h1>
-    <p class="mb-4">Welcome to your dashboard!</p>
-    <p>Here you can manage your movie reviews and watchlist.</p>
+  <div class="p-6">
+    <h2 class="text-2xl font-bold mb-4">My Dashboard</h2>
+    <WatchedList :movies="user?.watchedMovies || []" />
+    <Watchlist :movies="user?.watchlist || []" />
+    <FavoriteMovies :movies="user?.favoriteMovies?.slice(0, 10) || []" />
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted, computed } from "vue";
+import { useUserStore } from "../stores/userStore";
+import WatchedList from "../components/watched.vue";
+import Watchlist from "../components/watchlist.vue";
+import FavoriteMovies from "../components/favoriteMovies.vue";
+
+const userStore = useUserStore();
+onMounted(() => {
+  userStore.fetchUserProfile();
+});
+const user = computed(() => userStore.user);
+</script>
