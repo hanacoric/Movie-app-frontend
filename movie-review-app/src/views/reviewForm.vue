@@ -7,7 +7,10 @@
         {{ isEditing ? "Edit Your Review" : "Write a Review" }}
       </h2>
 
-      <StarRating v-model="rating" class="mb-6" />
+      <StarRating
+        v-model="rating"
+        class="mb-6 transition-transform duration-200 hover:scale-105"
+      />
 
       <textarea
         v-model="reviewText"
@@ -40,6 +43,7 @@
 <script lang="ts" setup>
 import { onMounted } from "vue";
 import { useReview } from "../modules/review/useReview";
+import StarRating from "../components/starRating.vue";
 
 const props = defineProps<{ imdbID: string }>();
 const {
