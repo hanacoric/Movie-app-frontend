@@ -65,6 +65,9 @@
       </div>
     </div>
   </div>
+  <div class="w-full mt-12 px-20">
+    <ReviewForm v-if="movie" :imdbID="movie.imdbID" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -72,6 +75,7 @@ import { onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import { useMovie } from "../modules/movies/useMovie";
 import { useListStore } from "../stores/listStore";
+import ReviewForm from "./reviewForm.vue";
 
 const { movie, fetchMovie } = useMovie();
 const listStore = useListStore();
