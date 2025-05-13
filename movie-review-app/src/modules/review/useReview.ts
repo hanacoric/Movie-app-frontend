@@ -139,3 +139,37 @@ export function useUserReviews() {
     deleteReview,
   };
 }
+// Public reviews for a movie
+export function usePublicReviews(movieId: string) {
+  const publicReviews = ref<ReviewWithUser[]>([]);
+  const loadingPublic = ref(false);
+
+  interface ReviewWithUser extends Review {
+    username: string;
+  }
+
+  const fetchPublicReviews = async () => {
+    try {
+      loadingPublic.value = true;
+      const { data } = await axios.get(
+        `https://movie-app-backend-ujpg.onrender.com/api/reviews/${movieId}`
+      );
+
+      // Temporary username fallback
+      publicReviews.value = data.map((r: any) => ({
+        ...r,
+        username: r.userId?.username || "anon",
+      }));
+    } catch (error) {
+      console.error("Failed to fetch public reviews", error);
+    } finally {
+      loadingPublic.value = false;
+    }
+  };
+
+  return {
+    publicReviews,
+    loadingPublic,
+    fetchPublicReviews,
+  };
+}
