@@ -65,14 +65,17 @@
       </div>
     </div>
   </div>
-  <PublicReviewList v-if="showAllReviews && movie" :movieId="movie.imdbID" />
+  <MovieReviews v-if="showAllReviews && movie" :movieId="movie.imdbID" />
 
-  <button
-    @click="showAllReviews = !showAllReviews"
-    class="mt-6 px-4 py-2 border border-blue-400 text-blue-400 rounded hover:bg-blue-500 hover:text-white"
-  >
-    {{ showAllReviews ? "Hide Reviews" : "Show All Reviews for This Movie" }}
-  </button>
+  <!-- View All Reviews Button -->
+  <div class="w-full flex justify-center mt-10">
+    <RouterLink
+      :to="`/reviews/${movie.imdbID}`"
+      class="px-6 py-3 rounded-xl text-white font-semibold transition-all bg-gradient-to-r from-purple-500 to-indigo-600 shadow-lg hover:from-purple-600 hover:to-indigo-700"
+    >
+      View All Reviews
+    </RouterLink>
+  </div>
 
   <div class="w-full mt-12 px-20">
     <ReviewForm v-if="movie" :imdbID="movie.imdbID" />
@@ -85,7 +88,7 @@ import { useRoute } from "vue-router";
 import { useMovie } from "../modules/movies/useMovie";
 import { useListStore } from "../stores/listStore";
 import ReviewForm from "./reviewForm.vue";
-import PublicReviewList from "../components/publicReviewList.vue";
+import MovieReviews from "./movieReviews.vue";
 
 const showAllReviews = ref(false);
 

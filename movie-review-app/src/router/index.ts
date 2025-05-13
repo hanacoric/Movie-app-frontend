@@ -6,6 +6,7 @@ import Login from "../views/login.vue";
 import Register from "../views/register.vue";
 import MovieDetails from "../views/movieDetails.vue";
 import MyReviews from "../views/myReviews.vue";
+import MovieReviews from "../views/movieReviews.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home, meta: { requiresAuth: true } },
@@ -28,6 +29,12 @@ const routes = [
     path: "/my-reviews",
     name: "MyReviews",
     component: () => import("../views/myReviews.vue"),
+  },
+  {
+    path: "/reviews/:movieId",
+    name: "MovieReviews",
+    component: () => import("../views/movieReviews.vue"),
+    props: true,
   },
 ];
 

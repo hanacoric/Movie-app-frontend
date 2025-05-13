@@ -151,11 +151,11 @@ export function usePublicReviews(movieId: string) {
   const fetchPublicReviews = async () => {
     try {
       loadingPublic.value = true;
+
       const { data } = await axios.get(
         `https://movie-app-backend-ujpg.onrender.com/api/reviews/${movieId}`
       );
 
-      // Temporary username fallback
       publicReviews.value = data.map((r: any) => ({
         ...r,
         username: r.userId?.username || "anon",
