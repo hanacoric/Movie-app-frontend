@@ -23,5 +23,10 @@ export const getMovieDetails = async (id: string) => {
   const response = await api.get(`/movie/${id}`);
   return response.data;
 };
+// fetch top-rated movies
+export const getTopRatedMovies = async () => {
+  const response = await api.get("/movies/top-rated");
+  return response.data;
+};
 
 export default api;

@@ -1,9 +1,15 @@
 <template>
-  <div class="text-white">
-    <h1 class="text-3xl font-bold mb-4">Dashboard</h1>
-    <p class="mb-4">Welcome to your dashboard!</p>
-    <p>Here you can manage your movie reviews and watchlist.</p>
+  <div class="container mx-auto px-4 py-6">
+    <TopRatedMovies />
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import TopRatedMovies from "../components/topRatedMovies.vue";
+</script>
+
+<style scoped>
+.container {
+  max-width: 1200px;
+}
+</style>
