@@ -45,6 +45,9 @@
             }}
           </span>
         </div>
+        <p class="text-xl mb-1 text-gray-400">
+          {{ movie.Genre }}
+        </p>
 
         <p class="text-xl mb-1">
           <strong>Director:</strong> {{ movie.Director }}
