@@ -1,9 +1,12 @@
 <template>
-  <div class="flex items-center justify-center h-screen w-full bg-transparent">
+  <div
+    class="fixed inset-0 flex items-center justify-center bg-transparent overflow-hidden"
+  >
     <div
       class="backdrop-blur-xl bg-white/10 rounded-3xl shadow-xl p-10 w-full max-w-sm text-white"
     >
-      <h2 class="text-center text-2xl font-semibold mb-6">LOGIN</h2>
+      <!-- Updated Login Heading -->
+      <h2 class="text-4xl font-bold text-pink-400 text-center mb-10">LOGIN</h2>
 
       <div class="space-y-6">
         <div>
@@ -11,12 +14,10 @@
           <input
             type="email"
             v-model="email"
-            class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none placeholder-transparent text-white"
+            class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-white placeholder-gray-400"
             placeholder="Email"
           />
-          <p v-if="fieldError" class="text-red-400 text-sm">
-            {{ fieldError }}
-          </p>
+          <p v-if="fieldError" class="text-red-400 text-sm">{{ fieldError }}</p>
         </div>
 
         <div class="relative">
@@ -24,7 +25,7 @@
           <input
             :type="showPassword ? 'text' : 'password'"
             v-model="password"
-            class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none placeholder-transparent text-white pr-10"
+            class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-white pr-10 placeholder-gray-400"
             placeholder="Password"
           />
           <button
@@ -37,29 +38,29 @@
               class="w-5 h-5"
             />
           </button>
-          <p v-if="fieldError" class="text-red-400 text-sm">
-            {{ fieldError }}
-          </p>
+          <p v-if="fieldError" class="text-red-400 text-sm">{{ fieldError }}</p>
         </div>
 
         <p v-if="error" class="text-red-400 text-sm mt-2 text-center">
           {{ error }}
         </p>
 
+        <!-- Styled Submit Button -->
         <button
-          class="w-full py-2 rounded-full bg-white text-black font-bold tracking-wide hover:bg-gray-200 transition"
           @click="handleLogin"
+          class="w-full py-2 border-2 border-purple-500 text-purple-500 rounded-md font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-purple-500 hover:to-indigo-500 hover:text-white"
         >
-          SUBMIT
+          Submit
         </button>
 
         <div class="text-sm text-center text-white mt-4">
           Don’t have an account?
           <RouterLink
             to="/register"
-            class="text-blue-300 underline hover:text-blue-200"
-            >Register</RouterLink
+            class="text-purple-400 underline hover:text-pink-200"
           >
+            Register
+          </RouterLink>
         </div>
       </div>
     </div>

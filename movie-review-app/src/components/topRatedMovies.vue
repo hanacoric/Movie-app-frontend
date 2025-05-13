@@ -1,6 +1,10 @@
 <template>
   <div class="mb-20 px-8">
-    <h2 class="text-3xl font-bold mb-10 text-white">Top Rated Movies</h2>
+    <h2
+      class="text-4xl font-extrabold mb-10 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-500 drop-shadow-md"
+    >
+      Top Rated Movies
+    </h2>
 
     <div v-if="loading" class="text-white text-lg">Loading...</div>
     <div v-else-if="error" class="text-red-400 text-lg">{{ error }}</div>

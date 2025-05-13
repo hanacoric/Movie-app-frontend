@@ -1,87 +1,89 @@
 <template>
-  <div class="flex items-center justify-center h-screen w-full bg-transparent">
+  <div
+    class="fixed inset-0 flex items-center justify-center bg-transparent overflow-hidden"
+  >
     <div
       class="backdrop-blur-xl bg-white/10 rounded-3xl shadow-xl p-10 w-full max-w-sm text-white"
     >
-      <h2 class="text-center text-2xl font-semibold mb-6">REGISTER</h2>
+      <!-- Styled Heading -->
+      <h2 class="text-4xl font-bold text-pink-400 text-center mb-10">
+        REGISTER
+      </h2>
+
       <div class="space-y-6">
+        <!-- Username -->
         <div>
           <label class="block text-sm mb-1">Username</label>
           <input
-            type="username"
+            type="text"
             v-model="username"
-            class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none placeholder-transparent text-white"
+            class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-white placeholder-gray-400"
             placeholder="Username"
           />
-          <p v-if="fieldError" class="text-red-400 text-sm">
-            {{ fieldError }}
-          </p>
+          <p v-if="fieldError" class="text-red-400 text-sm">{{ fieldError }}</p>
         </div>
 
-        <div class="space-y-6">
-          <div>
-            <label class="block text-sm mb-1">Email</label>
-            <input
-              type="email"
-              v-model="email"
-              class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none placeholder-transparent text-white"
-              placeholder="Email"
-            />
-            <p v-if="emailError" class="text-red-400 text-sm mt-1">
-              {{ emailError }}
-            </p>
-
-            <p v-if="fieldError" class="text-red-400 text-sm">
-              {{ fieldError }}
-            </p>
-          </div>
-
-          <div class="relative">
-            <label class="block text-sm mb-1">Password</label>
-            <input
-              :type="showPassword ? 'text' : 'password'"
-              v-model="password"
-              class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none placeholder-transparent text-white pr-10"
-              placeholder="Password"
-            />
-
-            <button
-              type="button"
-              @click="showPassword = !showPassword"
-              class="absolute right-0 top-0 mt-1.5 mr-2 text-white"
-            >
-              <component
-                :is="showPassword ? EyeOffIcon : EyeIcon"
-                class="w-5 h-5"
-              />
-            </button>
-            <p v-if="passwordError" class="text-red-400 text-sm mt-1">
-              {{ passwordError }}
-            </p>
-
-            <p v-if="fieldError" class="text-red-400 text-sm">
-              {{ fieldError }}
-            </p>
-          </div>
-          <p v-if="error" class="text-red-400 text-sm mt-2 text-center">
-            {{ error }}
+        <!-- Email -->
+        <div>
+          <label class="block text-sm mb-1">Email</label>
+          <input
+            type="email"
+            v-model="email"
+            class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-white placeholder-gray-400"
+            placeholder="Email"
+          />
+          <p v-if="emailError" class="text-red-400 text-sm mt-1">
+            {{ emailError }}
           </p>
+          <p v-if="fieldError" class="text-red-400 text-sm">{{ fieldError }}</p>
+        </div>
 
+        <!-- Password -->
+        <div class="relative">
+          <label class="block text-sm mb-1">Password</label>
+          <input
+            :type="showPassword ? 'text' : 'password'"
+            v-model="password"
+            class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-white pr-10 placeholder-gray-400"
+            placeholder="Password"
+          />
           <button
-            class="w-full py-2 rounded-full bg-white text-black font-bold tracking-wide hover:bg-gray-200 transition"
-            @click="handleRegister"
+            type="button"
+            @click="showPassword = !showPassword"
+            class="absolute right-0 top-0 mt-1.5 mr-2 text-white"
           >
-            SUBMIT
+            <component
+              :is="showPassword ? EyeOffIcon : EyeIcon"
+              class="w-5 h-5"
+            />
           </button>
+          <p v-if="passwordError" class="text-red-400 text-sm mt-1">
+            {{ passwordError }}
+          </p>
+          <p v-if="fieldError" class="text-red-400 text-sm">{{ fieldError }}</p>
+        </div>
 
-          <div class="text-sm text-center text-white mt-4">
-            Have an account?
-            <RouterLink
-              to="/login"
-              class="text-blue-300 underline hover:text-blue-200"
-              >Login</RouterLink
-            >
-          </div>
+        <p v-if="error" class="text-red-400 text-sm mt-2 text-center">
+          {{ error }}
+        </p>
+
+        <!-- Styled Submit Button -->
+        <button
+          @click="handleRegister"
+          class="w-full py-2 border-2 border-purple-500 text-purple-500 rounded-md font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-purple-500 hover:to-indigo-500 hover:text-white"
+        >
+          Submit
+        </button>
+
+        <!-- Login Redirect -->
+        <div class="text-sm text-center text-white mt-4">
+          Have an account?
+          <RouterLink
+            to="/login"
+            class="text-purple-400 underline hover:text-pink-200"
+          >
+            Login
+          </RouterLink>
         </div>
       </div>
     </div>

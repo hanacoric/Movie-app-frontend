@@ -70,6 +70,10 @@ export function useReview(imdbID: string) {
       }, 4000);
     }
   };
+  const resetReviewForm = () => {
+    reviewText.value = "";
+    rating.value = 0;
+  };
 
   return {
     reviewText,
@@ -78,6 +82,7 @@ export function useReview(imdbID: string) {
     fetchUserReview,
     submitReview,
     submissionStatus,
+    resetReviewForm,
   };
 }
 

@@ -7,23 +7,31 @@
     >
       <RouterLink
         to="/"
-        class="text-purple-400 hover:text-purple-300 transition"
+        class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500 text-2xl font-extrabold tracking-wide animate-pulse"
       >
         MovieLog
       </RouterLink>
       <div class="space-x-8">
-        <RouterLink to="/" class="hover:text-purple-400 transition"
-          >HOME</RouterLink
+        <RouterLink
+          to="/"
+          class="relative text-white transition duration-300 ease-in-out hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-400 hover:to-purple-500"
         >
-        <RouterLink to="/search" class="hover:text-purple-400 transition"
+          HOME
+        </RouterLink>
+
+        <RouterLink
+          to="/search"
+          class="relative text-white transition duration-300 ease-in-out hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-400 hover:to-purple-500"
           >SEARCH</RouterLink
         >
-        <RouterLink to="/dashboard" class="hover:text-purple-400 transition"
+        <RouterLink
+          to="/dashboard"
+          class="relative text-white transition duration-300 ease-in-out hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-400 hover:to-purple-500"
           >DASHBOARD</RouterLink
         >
         <template v-if="auth.isLoggedIn">
           <button
-            class="hover:text-purple-400 transition"
+            class="relative text-white transition duration-300 ease-in-out hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-400 hover:to-purple-500"
             @click="
               auth.logout();
               router.push('/login');
@@ -33,7 +41,9 @@
           </button>
         </template>
         <template v-else>
-          <RouterLink to="/login" class="hover:text-purple-400 transition"
+          <RouterLink
+            to="/login"
+            class="relative text-white transition duration-300 ease-in-out hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-pink-400 hover:to-purple-500"
             >LOGIN</RouterLink
           >
         </template>

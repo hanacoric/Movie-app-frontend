@@ -1,6 +1,10 @@
 <template>
   <div class="px-6 py-12 max-w-4xl mx-auto text-white">
-    <h1 class="text-3xl font-bold mb-8">Your Reviews</h1>
+    <h1
+      class="text-4xl font-extrabold mb-10 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-500 drop-shadow-md"
+    >
+      Your Reviews
+    </h1>
 
     <div v-if="reviews.length === 0" class="text-gray-400">
       You haven’t reviewed any movies yet.
@@ -14,7 +18,10 @@
       <div
         class="flex flex-col md:flex-row justify-between items-start md:items-center mb-2"
       >
-        <h2 class="text-xl font-bold mb-2 md:mb-0">{{ review.movieTitle }}</h2>
+        <h2 class="text-xl font-semibold font-sans truncate mb-2 text-white">
+          {{ review.movieTitle }}
+        </h2>
+
         <StarRating :modelValue="review.rating" :readOnly="true" />
       </div>
       <p class="text-base text-gray-300 mb-4">{{ review.reviewText }}</p>

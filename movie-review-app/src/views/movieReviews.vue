@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-12 px-6 max-w-4xl mx-auto text-white">
+  <div class="min-h-screen mt-12 px-6 max-w-4xl mx-auto text-white">
     <h2 class="text-2xl font-bold mb-6">
       All Reviews for: {{ movie?.Title || "this movie" }}
     </h2>

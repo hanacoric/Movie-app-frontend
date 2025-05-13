@@ -53,9 +53,11 @@ const {
   fetchUserReview,
   submitReview,
   submissionStatus,
+  resetReviewForm,
 } = useReview(props.imdbID);
 
 onMounted(() => {
   fetchUserReview();
+  resetReviewForm();
 });
 </script>
