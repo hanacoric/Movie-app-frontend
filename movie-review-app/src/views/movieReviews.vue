@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useMovie } from "../modules/movies/useMovie";
 import { usePublicReviews } from "../modules/review/useReview";
 import StarRating from "../components/starRating.vue";
@@ -37,6 +37,8 @@ const movieId = props.movieId;
 const { movie, fetchMovie } = useMovie();
 const { publicReviews, fetchPublicReviews, loadingPublic } =
   usePublicReviews(movieId);
+
+const showAllReviews = ref(true);
 
 // Load movie and reviews
 onMounted(async () => {

@@ -173,3 +173,22 @@ export function usePublicReviews(movieId: string) {
     fetchPublicReviews,
   };
 }
+
+const averageRating = ref(0);
+const totalReviews = ref(0);
+
+const fetchAverageRating = async (movieId: string) => {
+  try {
+    const { data } = await api.get(`/reviews/${movieId}`);
+    if (data.length > 0) {
+      const total = data.reduce((sum: number, r: any) => sum + r.rating, 0);
+      averageRating.value = parseFloat((total / data.length).toFixed(1));
+      totalReviews.value = data.length;
+    } else {
+      averageRating.value = 0;
+      totalReviews.value = 0;
+    }
+  } catch (err) {
+    console.error("Failed to fetch average rating", err);
+  }
+};

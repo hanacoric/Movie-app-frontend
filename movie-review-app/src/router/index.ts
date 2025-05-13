@@ -31,7 +31,7 @@ const routes = [
     component: () => import("../views/myReviews.vue"),
   },
   {
-    path: "/reviews/:movieId",
+    path: "/movie/:movieId/reviews",
     name: "MovieReviews",
     component: () => import("../views/movieReviews.vue"),
     props: true,
