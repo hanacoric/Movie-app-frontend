@@ -3,6 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
 });
+
 // fetches the login token from backend and sets it in the header of the request
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
