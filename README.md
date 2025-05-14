@@ -4,7 +4,8 @@ This is the frontend for the **Movie Review Web App**, built using **Vue 3** wit
 
 ## Live Demo
 
-**Frontend:** (movielog-delta.vercel.app)
+**Frontend:** (https://movielog-delta.vercel.app/)
+---
 **Swagger Docs:** (https://movie-app-backend-ujpg.onrender.com/api-docs/#/)
 
 ---
