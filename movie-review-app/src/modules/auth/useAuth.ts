@@ -20,7 +20,7 @@ export const useAuth = () => {
     try {
       const payload = { email, password, recaptchaToken };
 
-      const response = await api.post("/auth/login", payload, {
+      const response = await api.post("/users/login", payload, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -59,7 +59,7 @@ export const useAuth = () => {
     recaptchaToken: string
   ): Promise<void> => {
     try {
-      const response = await api.post("/auth/register", {
+      const response = await api.post("/users/register", {
         username,
         email,
         password,
