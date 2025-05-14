@@ -5,7 +5,6 @@
     <div
       class="backdrop-blur-xl bg-white/10 rounded-3xl shadow-xl p-10 w-full max-w-sm text-white"
     >
-      <!-- Updated Login Heading -->
       <h2 class="text-4xl font-bold text-pink-400 text-center mb-10">LOGIN</h2>
 
       <div class="space-y-6">
@@ -17,7 +16,6 @@
             class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-white placeholder-gray-400"
             placeholder="Email"
           />
-          <p v-if="fieldError" class="text-red-400 text-sm">{{ fieldError }}</p>
         </div>
 
         <div class="relative">
@@ -38,14 +36,16 @@
               class="w-5 h-5"
             />
           </button>
-          <p v-if="fieldError" class="text-red-400 text-sm">{{ fieldError }}</p>
         </div>
+
+        <p v-if="fieldError" class="text-red-400 text-sm text-center">
+          {{ fieldError }}
+        </p>
 
         <p v-if="error" class="text-red-400 text-sm mt-2 text-center">
           {{ error }}
         </p>
 
-        <!-- Styled Submit Button -->
         <button
           @click="handleLogin"
           class="w-full py-2 border-2 border-purple-500 text-purple-500 rounded-md font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-purple-500 hover:to-indigo-500 hover:text-white"
@@ -68,24 +68,22 @@
 </template>
 
 <script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../modules/auth/useAuth";
 import { useAuthStore } from "../stores/authStore";
 import { ref } from "vue";
 import { EyeIcon, EyeOffIcon } from "lucide-vue-next";
-const showPassword = ref(false);
 import { useReCaptcha } from "vue-recaptcha-v3";
 
+const showPassword = ref(false);
 const auth = useAuthStore();
-
 const fieldError = ref("");
-
 const recaptcha = useReCaptcha();
+const router = useRouter();
+const { email, password, login, token, user, error } = useAuth();
 
 const handleLogin = async () => {
   error.value = null;
-
   fieldError.value = "";
 
   if (!email.value || !password.value) {
@@ -109,13 +107,6 @@ const handleLogin = async () => {
     auth.login(token.value, user.value._id);
     router.push("/");
   }
-};
-
-const router = useRouter();
-const { email, password, login, token, user, error } = useAuth();
-
-const goToRegister = () => {
-  router.push("/register");
 };
 </script>
 

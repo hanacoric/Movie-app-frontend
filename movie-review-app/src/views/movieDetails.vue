@@ -1,14 +1,12 @@
 <template>
   <div v-if="movie" class="px-20 py-20 flex justify-center text-white">
     <div class="flex flex-col md:flex-row items-center gap-20 max-w-4xl w-full">
-      <!-- Poster -->
       <img
         :src="movie.Poster"
         alt="Movie Poster"
         class="w-80 rounded-xl shadow-2xl"
       />
 
-      <!-- Movie Info -->
       <div
         class="flex flex-col items-center md:items-start max-w-2xl text-center md:text-left"
       >
@@ -22,7 +20,7 @@
             ({{ movie.Year }})
           </span>
         </h1>
-        <!-- Average Rating Badge -->
+
         <div
           v-if="averageRating > 0"
           class="mt-2 mb-4 text-center md:text-left"
@@ -50,15 +48,14 @@
         </p>
 
         <p class="text-xl mb-1">
-          <strong>Director:</strong> {{ movie.Director }}
+          <strong>Director:</strong> {{ movie.Director || "N/A" }}
         </p>
+
         <p class="text-xl mb-4"><strong>Actors:</strong> {{ movie.Actors }}</p>
 
         <p class="text-base text-gray-300 mb-8 leading-relaxed max-w-xl">
           {{ movie.Plot }}
         </p>
-
-        <!-- Buttons -->
         <div class="flex gap-4 flex-nowrap">
           <button
             class="px-6 py-3 rounded-lg text-sm whitespace-nowrap border-2 border-blue-400 text-blue-300 font-semibold shadow-lg shadow-blue-500/30 transition-all duration-300 hover:text-white hover:bg-gradient-to-r hover:from-cyan-600 hover:to-blue-600"
@@ -93,7 +90,6 @@
     </div>
   </div>
 
-  <!-- View All Reviews Button -->
   <div class="w-full flex justify-center mt-10">
     <RouterLink
       :to="`/movie/${movie.imdbID}/reviews`"
@@ -114,7 +110,7 @@ import { useRoute } from "vue-router";
 import { useMovie } from "../modules/movies/useMovie";
 import { useListStore } from "../stores/listStore";
 import ReviewForm from "./reviewForm.vue";
-import api from "../services/api";
+import { fetchAverageRating } from "../modules/review/useReview";
 
 const { movie, fetchMovie } = useMovie();
 const listStore = useListStore();
@@ -128,7 +124,7 @@ const totalReviews = ref(0);
 onBeforeMount(async () => {
   await listStore.fetchUserLists();
   await fetchMovie(movieId);
-  await fetchAndCalculateAverage(movieId);
+  await fetchAverageRating(movieId, averageRating, totalReviews);
 });
 
 // List handling
@@ -137,18 +133,4 @@ const isInList = (category: "watched" | "watchlist" | "favorites") =>
 
 const toggleCategory = (category: "watched" | "watchlist" | "favorites") =>
   listStore.toggleCategory(category, movieId);
-
-// Average rating logic
-const fetchAndCalculateAverage = async (id: string) => {
-  try {
-    const { data } = await api.get(`/reviews/${id}`);
-    if (data.length > 0) {
-      const total = data.reduce((sum: number, r: any) => sum + r.rating, 0);
-      averageRating.value = parseFloat((total / data.length).toFixed(1));
-      totalReviews.value = data.length;
-    }
-  } catch (err) {
-    console.error("Error fetching reviews for average", err);
-  }
-};
 </script>

@@ -1,7 +1,5 @@
 import { ref } from "vue";
 import api from "../../services/api";
-import { useRouter } from "vue-router";
-import axios from "axios";
 
 export const useAuth = () => {
   const token = ref<string | null>(localStorage.getItem("token"));
@@ -13,7 +11,7 @@ export const useAuth = () => {
   const email = ref<string>("");
   const password = ref<string>("");
 
-  //login user
+  //authenticates a user, stores token in localStorage, and updates auth state
   const login = async (
     email: string,
     password: string,
@@ -43,7 +41,7 @@ export const useAuth = () => {
     }
   };
 
-  //logout user
+  //logout user, clears all user-related localStorage and state
   const logout = () => {
     token.value = null;
     user.value = null;
@@ -53,7 +51,7 @@ export const useAuth = () => {
     console.log("User logged out");
   };
 
-  // register user
+  //registers a new user and stores their token
   const register = async (
     username: string,
     email: string,
@@ -69,7 +67,7 @@ export const useAuth = () => {
       });
       token.value = response.data.token;
       user.value = response.data;
-      isLoggedIn.value = false;
+      isLoggedIn.value = true;
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userIDToken", response.data._id);

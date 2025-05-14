@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/home.vue";
-import Search from "../views/search.vue";
-import Dashboard from "../views/dashboard.vue";
-import Login from "../views/login.vue";
-import Register from "../views/register.vue";
-import MovieDetails from "../views/movieDetails.vue";
-import MyReviews from "../views/myReviews.vue";
-import MovieReviews from "../views/movieReviews.vue";
+
+const Home = () => import("../views/home.vue");
+const Search = () => import("../views/search.vue");
+const Dashboard = () => import("../views/dashboard.vue");
+const Login = () => import("../views/login.vue");
+const Register = () => import("../views/register.vue");
+const MovieDetails = () => import("../views/movieDetails.vue");
+const MyReviews = () => import("../views/myReviews.vue");
+const MovieReviews = () => import("../views/movieReviews.vue");
 
 const routes = [
   { path: "/", name: "Home", component: Home, meta: { requiresAuth: true } },
@@ -28,12 +29,12 @@ const routes = [
   {
     path: "/my-reviews",
     name: "MyReviews",
-    component: () => import("../views/myReviews.vue"),
+    component: MyReviews,
   },
   {
     path: "/movie/:movieId/reviews",
     name: "MovieReviews",
-    component: () => import("../views/movieReviews.vue"),
+    component: MovieReviews,
     props: true,
   },
 ];

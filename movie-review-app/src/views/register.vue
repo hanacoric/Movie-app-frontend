@@ -5,13 +5,11 @@
     <div
       class="backdrop-blur-xl bg-white/10 rounded-3xl shadow-xl p-10 w-full max-w-sm text-white"
     >
-      <!-- Styled Heading -->
       <h2 class="text-4xl font-bold text-pink-400 text-center mb-10">
         REGISTER
       </h2>
 
       <div class="space-y-6">
-        <!-- Username -->
         <div>
           <label class="block text-sm mb-1">Username</label>
           <input
@@ -20,10 +18,8 @@
             class="w-full bg-transparent border-b border-white/30 focus:border-white outline-none text-white placeholder-gray-400"
             placeholder="Username"
           />
-          <p v-if="fieldError" class="text-red-400 text-sm">{{ fieldError }}</p>
         </div>
 
-        <!-- Email -->
         <div>
           <label class="block text-sm mb-1">Email</label>
           <input
@@ -35,10 +31,8 @@
           <p v-if="emailError" class="text-red-400 text-sm mt-1">
             {{ emailError }}
           </p>
-          <p v-if="fieldError" class="text-red-400 text-sm">{{ fieldError }}</p>
         </div>
 
-        <!-- Password -->
         <div class="relative">
           <label class="block text-sm mb-1">Password</label>
           <input
@@ -60,14 +54,13 @@
           <p v-if="passwordError" class="text-red-400 text-sm mt-1">
             {{ passwordError }}
           </p>
-          <p v-if="fieldError" class="text-red-400 text-sm">{{ fieldError }}</p>
         </div>
 
-        <p v-if="error" class="text-red-400 text-sm mt-2 text-center">
-          {{ error }}
+        <p v-if="fieldError" class="text-red-400 text-sm text-center">
+          {{ fieldError }}
         </p>
+        <p v-if="error" class="text-red-400 text-sm text-center">{{ error }}</p>
 
-        <!-- Styled Submit Button -->
         <button
           @click="handleRegister"
           class="w-full py-2 border-2 border-purple-500 text-purple-500 rounded-md font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-purple-500 hover:to-indigo-500 hover:text-white"
@@ -75,7 +68,6 @@
           Submit
         </button>
 
-        <!-- Login Redirect -->
         <div class="text-sm text-center text-white mt-4">
           Have an account?
           <RouterLink
@@ -91,19 +83,21 @@
 </template>
 
 <script setup lang="ts">
-import Navbar from "../components/Navbar.vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../modules/auth/useAuth";
 import { useAuthStore } from "../stores/authStore";
 import { ref } from "vue";
 import { EyeIcon, EyeOffIcon } from "lucide-vue-next";
 import { useReCaptcha } from "vue-recaptcha-v3";
+
 const showPassword = ref(false);
 const auth = useAuthStore();
 const emailError = ref("");
 const passwordError = ref("");
 const fieldError = ref("");
 const recaptcha = useReCaptcha();
+const router = useRouter();
+const { username, email, password, register, token, user, error } = useAuth();
 
 const handleRegister = async () => {
   emailError.value = "";
@@ -127,6 +121,7 @@ const handleRegister = async () => {
       "Password must be at least 6 characters and include a number.";
     return;
   }
+
   if (!recaptcha || !recaptcha.executeRecaptcha) {
     fieldError.value = "ReCAPTCHA is not ready.";
     return;
@@ -137,19 +132,18 @@ const handleRegister = async () => {
     fieldError.value = "ReCAPTCHA verification failed.";
     return;
   }
-  console.log("reCAPTCHA token:", recaptchaToken);
+
   await register(username.value, email.value, password.value, recaptchaToken);
   if (token.value) {
     auth.login(token.value, user.value?._id || "");
-    router.push("/login");
+    router.push("/");
   }
 };
-
-const router = useRouter();
-const { username, email, password, register, isLoggedIn, token, user, error } =
-  useAuth();
-
-const goToLogin = () => {
-  router.push("/login");
-};
 </script>
+
+<style scoped>
+.grecaptcha-badge {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+</style>

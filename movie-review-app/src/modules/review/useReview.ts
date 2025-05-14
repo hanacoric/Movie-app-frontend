@@ -1,14 +1,9 @@
 import { ref } from "vue";
+import type { Ref } from "vue";
 import api from "../../services/api";
 import { useAuthStore } from "../../stores/authStore";
-import axios from "axios";
-const OMDB_API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
-const reviewText = ref("");
-const rating = ref(0);
-const isEditing = ref(false);
-const reviewId = ref("");
-export const submissionStatus = ref("");
+const OMDB_API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
 export interface Review {
   _id: string;
@@ -17,15 +12,27 @@ export interface Review {
   reviewText: string;
 }
 
+export interface ReviewWithMovieTitle extends Review {
+  movieTitle?: string;
+}
+
+export interface ReviewWithUser extends Review {
+  username: string;
+}
+
+// Review form state
+const reviewText = ref("");
+const rating = ref(0);
+const isEditing = ref(false);
+const reviewId = ref("");
+export const submissionStatus = ref("");
+
 export function useReview(imdbID: string) {
   const authStore = useAuthStore();
-  const token = authStore.token;
 
   const fetchUserReview = async () => {
     try {
-      const { data } = await api.get(`/reviews/user/${imdbID}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const { data } = await api.get(`/reviews/user/${imdbID}`);
 
       if (data) {
         isEditing.value = true;
@@ -70,6 +77,7 @@ export function useReview(imdbID: string) {
       }, 4000);
     }
   };
+
   const resetReviewForm = () => {
     reviewText.value = "";
     rating.value = 0;
@@ -87,18 +95,6 @@ export function useReview(imdbID: string) {
 }
 
 // User dashboard reviews logic
-
-export interface Review {
-  _id: string;
-  movieId: string;
-  rating: number;
-  reviewText: string;
-}
-
-export interface ReviewWithMovieTitle extends Review {
-  movieTitle?: string;
-}
-
 export function useUserReviews() {
   const reviews = ref<ReviewWithMovieTitle[]>([]);
 
@@ -106,13 +102,10 @@ export function useUserReviews() {
     try {
       const { data } = await api.get("/reviews/user");
 
-      // Fetch titles for each movieId
       const reviewsWithTitles = await Promise.all(
         data.map(async (review: Review) => {
           try {
-            const res = await axios.get(
-              `https://www.omdbapi.com/?i=${review.movieId}&apikey=${OMDB_API_KEY}`
-            );
+            const res = await api.get(`/movie/${review.movieId}`);
             return {
               ...review,
               movieTitle: res.data?.Title || review.movieId,
@@ -129,6 +122,7 @@ export function useUserReviews() {
     }
   };
 
+  // Delete review
   const deleteReview = async (id: string) => {
     try {
       await api.delete(`/reviews/${id}`);
@@ -144,22 +138,16 @@ export function useUserReviews() {
     deleteReview,
   };
 }
+
 // Public reviews for a movie
 export function usePublicReviews(movieId: string) {
   const publicReviews = ref<ReviewWithUser[]>([]);
   const loadingPublic = ref(false);
 
-  interface ReviewWithUser extends Review {
-    username: string;
-  }
-
   const fetchPublicReviews = async () => {
     try {
       loadingPublic.value = true;
-
-      const { data } = await axios.get(
-        `https://movie-app-backend-ujpg.onrender.com/api/reviews/${movieId}`
-      );
+      const { data } = await api.get(`/reviews/${movieId}`);
 
       publicReviews.value = data.map((r: any) => ({
         ...r,
@@ -179,19 +167,24 @@ export function usePublicReviews(movieId: string) {
   };
 }
 
+// Average rating logic
 const averageRating = ref(0);
 const totalReviews = ref(0);
 
-const fetchAverageRating = async (movieId: string) => {
+export const fetchAverageRating = async (
+  movieId: string,
+  avgRef: Ref<number>,
+  countRef: Ref<number>
+) => {
   try {
     const { data } = await api.get(`/reviews/${movieId}`);
     if (data.length > 0) {
       const total = data.reduce((sum: number, r: any) => sum + r.rating, 0);
-      averageRating.value = parseFloat((total / data.length).toFixed(1));
-      totalReviews.value = data.length;
+      avgRef.value = parseFloat((total / data.length).toFixed(1));
+      countRef.value = data.length;
     } else {
-      averageRating.value = 0;
-      totalReviews.value = 0;
+      avgRef.value = 0;
+      countRef.value = 0;
     }
   } catch (err) {
     console.error("Failed to fetch average rating", err);

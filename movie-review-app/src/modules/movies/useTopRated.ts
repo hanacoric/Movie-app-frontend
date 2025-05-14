@@ -1,6 +1,12 @@
 import { ref } from "vue";
 import { getTopRatedMovies } from "../../services/api";
-import type { TopRatedMovie } from "../../types/movie";
+export interface TopRatedMovie {
+  movieId: string;
+  title: string;
+  year: string;
+  poster: string;
+  avgRating: number;
+}
 
 export function useTopRated() {
   const topRatedMovies = ref<TopRatedMovie[]>([]);
