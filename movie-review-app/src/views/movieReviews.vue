@@ -1,7 +1,10 @@
 <template>
-  <div class="min-h-screen mt-12 px-6 max-w-4xl mx-auto text-white">
-    <h2 class="text-2xl font-bold mb-6">
-      All Reviews for: {{ movie?.Title || "this movie" }}
+  <div
+    class="min-h-screen px-6 pt-12 pb-24 max-w-4xl mx-auto text-white overflow-y-auto"
+  >
+    <h2 class="text-2xl font-bold font-sans truncate mb-10 text-white">
+      All Reviews for:
+      <span class="inline">{{ movie?.Title || "this movie" }}</span>
     </h2>
 
     <div v-if="loadingPublic" class="text-gray-300">Loading reviews...</div>
@@ -13,7 +16,7 @@
     <div
       v-else
       v-for="review in publicReviews"
-      :key="review._id"
+      :key="review._id ?? review.reviewText ?? Math.random().toString()"
       class="bg-white/10 backdrop-blur-md rounded-xl p-6 mb-6 shadow"
     >
       <p class="text-sm text-gray-400 mb-2">@{{ review.username || "anon" }}</p>
